@@ -114,6 +114,43 @@ LIMIT 1
 
 ![Alt text](img/12.4.3.png)
 
+Теперь предположим, что год важен. Тогда:
+
+```sql
+SELECT
+	mp.month,
+	mp.month_payments,
+	mr.number_of_rentals
+FROM
+	(
+	SELECT
+		SUM(amount) AS month_payments,
+		DATE_FORMAT(payment_date, '%Y-%M') AS `month`
+	FROM
+		payment p
+	GROUP BY
+		DATE_FORMAT(payment_date, '%Y-%M')
+) AS mp
+INNER JOIN 
+(
+	SELECT
+		COUNT(*) AS number_of_rentals,
+		DATE_FORMAT(rental_date, '%Y-%M') AS `month`
+	FROM
+		rental r
+	GROUP BY
+		DATE_FORMAT(rental_date, '%Y-%M')
+) as mr
+ON
+	mp.month = mr.month
+ORDER BY
+	mp.month_payments DESC
+LIMIT 1
+;
+```
+
+![Alt text](img/12.4.3.2.png)
+
 ---
 
 ## Дополнительные задания (со звездочкой*)
