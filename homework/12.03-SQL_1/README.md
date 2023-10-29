@@ -34,7 +34,7 @@ FROM
 	payment
 WHERE
 	amount > 10
-	AND payment_date > '2005-06-15'
+	AND payment_date >= '2005-06-15'
 	AND payment_date < '2005-06-19';
 ```
 
