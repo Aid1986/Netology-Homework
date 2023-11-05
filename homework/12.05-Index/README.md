@@ -7,6 +7,20 @@
 
 ### Решение 1
 
+Для наглядности выведем не только итоговое значение, но и промежуточные значения. Тогда:
+
+```sql
+SELECT
+	SUM(DATA_LENGTH) as all_tables_data_length,
+	SUM(INDEX_LENGTH) AS all_tables_index_length,
+	SUM(INDEX_LENGTH)/SUM(DATA_LENGTH) AS ratio,
+	CONCAT(ROUND(SUM(INDEX_LENGTH)/SUM(DATA_LENGTH) * 100, 2), "%") AS percent_of_index_length
+FROM
+	INFORMATION_SCHEMA.TABLES;
+```
+
+![Alt text](img/12.5.1.png)
+
 ---
 ### Задание 2
 
