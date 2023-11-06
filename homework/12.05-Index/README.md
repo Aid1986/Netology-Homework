@@ -177,11 +177,53 @@ GROUP BY
 
 ```
 
-Cтало хуже. Видимо, из-за необходимости сверяться с индексами.
+Cтало хуже. Видимо, из-за необходимости сверяться с индексами.<br>
+Или из-за необходимости приведения к дате.
+
+Попробуем изменить условие так, чтобы не было необходимости преобразовывать значение к дате и использовалась проверка промежутка.
+
+```sql
+SELECT
+	concat(c.last_name, ' ', c.first_name),
+	sum(p.amount)
+FROM
+	payment p
+INNER JOIN
+	rental r
+ON
+	p.payment_date = r.rental_date
+INNER JOIN
+	customer c
+ON
+	c.customer_id = r.customer_id
+WHERE
+	p.payment_date >= '2005-07-30'
+	AND p.payment_date < DATE_ADD('2005-07-30', INTERVAL 1 DAY)
+GROUP BY
+	c.customer_id;
+```
+
+В таком случае индексирование хорошо сказывается на скорости поиска, ещё где-то в два раза сокращая время выполнения:
+
+```
+-> Limit: 200 row(s)  (actual time=3.47..3.5 rows=200 loops=1)
+    -> Table scan on <temporary>  (actual time=3.47..3.49 rows=200 loops=1)
+        -> Aggregate using temporary table  (actual time=3.46..3.46 rows=391 loops=1)
+            -> Nested loop inner join  (cost=571 rows=634) (actual time=0.0476..3.02 rows=642 loops=1)
+                -> Nested loop inner join  (cost=349 rows=634) (actual time=0.0338..1.11 rows=634 loops=1)
+                    -> Filter: ((r.rental_date >= TIMESTAMP'2005-07-30 00:00:00') and (r.rental_date < <cache>(('2005-07-30' + interval 1 day))))  (cost=127 rows=634) (actual time=0.0239..0.336 rows=634 loops=1)
+                        -> Covering index range scan on r using rental_date over ('2005-07-30 00:00:00' <= rental_date < '2005-07-31 00:00:00')  (cost=127 rows=634) (actual time=0.021..0.237 rows=634 loops=1)
+                    -> Single-row index lookup on c using PRIMARY (customer_id=r.customer_id)  (cost=0.25 rows=1) (actual time=0.00106..0.00108 rows=1 loops=634)
+                -> Index lookup on p using payment_date_index (payment_date=r.rental_date)  (cost=0.25 rows=1) (actual time=0.00239..0.00279 rows=1.01 loops=634)
+
+```
+
 
 ### Итого. 
 
-Наибольший прирост производительности обеспечивает избавление от лишних таблиц и условий. <br>Небольшой рост обеспечивает смена оконной функции с последующим использованием distinct на банальное объединение таблиц и group by, но это надо исследовать.
+Наибольший прирост производительности обеспечивает избавление от лишних таблиц и условий. <br>
+Небольшой рост обеспечивает смена оконной функции с последующим использованием distinct на банальное объединение таблиц и group by, но это надо исследовать.<br>
+Также помогает индексирование в сочетании с оптимизацией условий поиска по дате.
 
 ---
 
