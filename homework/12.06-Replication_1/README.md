@@ -77,3 +77,42 @@ status
 
 ### Решение 3
 
+#### Master 1 (masterubu)
+
+my.cnf
+
+![Alt text](img/12.6.3.1.png)
+
+Slave status:
+
+![Alt text](img/12.6.3.2.png)
+
+![Alt text](img/12.6.3.3.png)
+
+Master status:
+
+![Alt text](img/12.6.3.4.png)
+
+#### Master 2 (slaveubu)
+
+my.cnf
+
+![Alt text](img/12.6.3.5.png)
+
+Slave status:
+
+![Alt text](img/12.6.3.6.png)
+
+![Alt text](img/12.6.3.7.png)
+
+Master status:
+
+![Alt text](img/12.6.3.8.png)
+
+#### Тестирование
+
+Изменения на одной машине влияют на другую и наоборот:
+
+![Alt text](img/12.6.3.9.png)
+
+![Alt text](img/12.6.3.10.png)
