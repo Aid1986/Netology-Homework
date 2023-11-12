@@ -1,0 +1,79 @@
+version: '3.1'
+
+services:
+  bookshops:
+    image: postgres
+    container_name: bookshops
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      bookshops_network:
+        ipv4_address: 172.1.0.10
+  
+  books_fiction:
+    image: postgres
+    container_name: books_fiction
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      bookshops_network:
+        ipv4_address: 172.1.0.11
+
+  books_nonfiction:
+    image: postgres
+    container_name: books_nonfiction
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      bookshops_network:
+        ipv4_address: 172.1.0.12
+
+  users_male:
+    image: postgres
+    container_name: users_male
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      bookshops_network:
+        ipv4_address: 172.1.0.13
+  
+  users_female:
+    image: postgres
+    container_name: users_female
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      bookshops_network:
+        ipv4_address: 172.1.0.14
+
+  stores_moscow:
+    image: postgres
+    container_name: stores_moscow
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      bookshops_network:
+        ipv4_address: 172.1.0.15
+  
+  stores_krasnodar:
+    image: postgres
+    container_name: stores_krasnodar
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      bookshops_network:
+        ipv4_address: 172.1.0.16
+
+networks:
+  bookshops_network:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.1.0.0/24
