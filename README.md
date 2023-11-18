@@ -38,7 +38,7 @@
 6. [Репликация и масштабирование. Часть 1](homework/12.06-Replication_1/README.md)
 7. [Репликация и масштабирование. Часть 2](homework/12.07-Replication_2/README.md)
 8. [Резервное копирование](homework/12.08-Backup/README.md)
-9. [Базы данных в облаке]()
+9. [Базы данных в облаке](homework/12.09-DatabasesInCloud/README.md)
 
 ## 13. Информационная безопасность
 
