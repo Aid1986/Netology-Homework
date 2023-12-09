@@ -44,7 +44,7 @@
 
 1. [Уязвимости и атаки на информационные системы](homework/13.01-VulnerabilitiesAndAttacks/README.md)
 2. [Защита хоста](homework/13.02-HostProtection/README.md)
-3. [Защита сети]()
+3. [Защита сети](homework/13.03-NetworkProtection/README.md)
 4. [Лучшие практики современной информационной безопасности]()
 
 ## 14. Системы управления версиями
